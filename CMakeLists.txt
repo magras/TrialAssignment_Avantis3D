@@ -2,10 +2,10 @@ cmake_minimum_required(VERSION 2.10)
 project(Avantis3D)
 
 include(cmake/Modules/conan.cmake)
-conan_cmake_run(CONANFILE conanfile.txt)
-
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()
+conan_cmake_run(
+  CONANFILE conanfile.txt
+  BASIC_SETUP
+  BUILD missing)
 
 add_executable(triangle_cross src/main.cpp)
 
