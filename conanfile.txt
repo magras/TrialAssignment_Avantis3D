@@ -1,0 +1,6 @@
+[requires]
+blaze/3.3@conan/release
+lapack/3.7.1@conan/stable
+
+[generators]
+cmake
