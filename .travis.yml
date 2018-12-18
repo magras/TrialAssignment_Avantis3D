@@ -2,12 +2,24 @@ dist: xenial
 
 language: cpp
 
+compiler: gcc
+
+os: linux
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-8
+
 install:
   - pip install --user conan
 
 script:
   - mkdir build
   - cd build
+  - export CC=gcc-8
+  - export CXX=g++-8
   - cmake .. -DCMAKE_BUILD_TYPE=Release
   - cmake --build .
   - ctest --output-on-failure
