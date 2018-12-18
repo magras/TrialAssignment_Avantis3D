@@ -25,7 +25,7 @@ Point3d perpendicular(Triangle const& t) {
     return cross(t[1]-t[0], t[2]-t[0]);
 }
 
-Mat4d transformation_matrix(Point3d i, Point3d j, Point3d k, Point3d t) {
+Mat4d transformation_matrix(Point3d const& i, Point3d const& j, Point3d const& k, Point3d const& t) {
     return Mat4d{
         {i[0], j[0], k[0], t[0]},
         {i[1], j[1], k[1], t[1]},
