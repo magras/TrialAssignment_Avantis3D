@@ -19,3 +19,9 @@ add_custom_command(TARGET triangle_cross POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
     "${CONAN_BIN_DIRS_LAPACK}"
     $<TARGET_FILE_DIR:triangle_cross>)
+
+enable_testing()
+
+add_test(triangle_cross_test
+  triangle_cross
+  )
