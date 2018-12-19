@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/magras/TrialAssignment_Avantis3D.svg?branch=master)](https://travis-ci.com/magras/TrialAssignment_Avantis3D)
+
 Предлагаем Вам выполнить тестовое задание для предварительной оценки Ваших
 умений. При успешном прохождении этого этапа мы с удовольствием пригласим
 Вас на очное собеседование.
