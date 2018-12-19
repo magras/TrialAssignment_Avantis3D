@@ -4,7 +4,7 @@ project(Avantis3D)
 include(cmake/Modules/conan.cmake)
 conan_cmake_run(
   CONANFILE conanfile.txt
-  BASIC_SETUP
+  BASIC_SETUP CMAKE_TARGETS
   BUILD missing)
 
 add_executable(triangle_cross src/main.cpp)
@@ -13,15 +13,13 @@ set_target_properties(triangle_cross PROPERTIES
   CXX_STANDARD 17
   CXX_EXTENSIONS OFF)
 
-target_link_libraries(triangle_cross ${CONAN_LIBS})
-
-add_custom_command(TARGET triangle_cross POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CONAN_BIN_DIRS_LAPACK}"
-    $<TARGET_FILE_DIR:triangle_cross>)
+target_link_libraries(triangle_cross
+  CONAN_PKG::blaze
+  CONAN_PKG::lapack
+  CONAN_PKG::gtest)
 
 enable_testing()
 
-add_test(triangle_cross_test
-  triangle_cross
-  )
+add_test(
+  NAME triangle_cross_test
+  COMMAND triangle_cross)
