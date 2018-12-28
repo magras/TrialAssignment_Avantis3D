@@ -1,5 +1,6 @@
 [requires]
 blaze/3.3@conan/release
+boost/1.69.0@conan/stable
 lapack/3.7.1@conan/stable
 gtest/1.8.1@bincrafters/stable
 

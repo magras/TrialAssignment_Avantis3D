@@ -7,7 +7,12 @@ conan_cmake_run(
   BASIC_SETUP CMAKE_TARGETS
   BUILD missing)
 
-add_executable(triangle_cross src/main.cpp)
+add_executable(triangle_cross
+  src/equal_to_zero.h
+  src/line_segment_line_segment_intersection_3d.cpp
+  src/triangle_line_segment_intersection_3d.cpp
+  src/types.h
+  src/main.cpp)
 
 set_target_properties(triangle_cross PROPERTIES
   CXX_STANDARD 17
@@ -15,6 +20,7 @@ set_target_properties(triangle_cross PROPERTIES
 
 target_link_libraries(triangle_cross
   CONAN_PKG::blaze
+  CONAN_PKG::boost
   CONAN_PKG::lapack
   CONAN_PKG::gtest)
 
