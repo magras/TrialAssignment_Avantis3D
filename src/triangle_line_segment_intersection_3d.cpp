@@ -9,6 +9,7 @@
 #define UNREACHABLE assert(false)
 
 std::optional<Point3d> line_segment_line_segment_intersection(LineSegment ln0, LineSegment ln1);
+std::optional<Point2d> triangle_line_segment_intersection(Triangle2d const& tri, LineSegment2d const& ls);
 
 namespace {
 
@@ -82,6 +83,24 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle const& tri, L
     // Transform line segment into new basis.
     Point4d a = trans * to_homogen(ln[0]);
     Point4d b = trans * to_homogen(ln[1]);
+
+    // TODO: magnitude
+    if (equal_to_zero(a[2], 1) && equal_to_zero(b[2], 1)) {
+        auto x = triangle_line_segment_intersection(
+            Triangle2d{
+                Point2d{0,0},
+                Point2d{0,0},
+                Point2d{0,0}},
+            LineSegment2d{
+                Point2d{a[0], a[1]},
+                Point2d{b[0], b[1]}});
+        
+        if (!x)
+            return std::nullopt;
+
+        Point3d t {x.value()[0], x.value()[1], 0};
+        return from_homogen(inv_trans * to_homogen(t));
+    }
 
     // If both ends of segment lie on one side of a triangle plane, there is no intersection.
     if (a[2] * b[2] > 0)
