@@ -1,6 +1,14 @@
 #include <optional>
 #include "types.h"
 
+// Forward two dementional case to more general three dimentional implementation.
+
+// I'm loosing some performance here, but I'm lazy right now. And there was no any
+// performance requirements in assignment.
+
+// Actualy algorithm for plane would be very similar to 3d case. Essentually just
+// replace cross product with perp dot product and skip coplanar check.
+
 namespace {
 
     Point2d point_to_2d(Point3d const& x) {
