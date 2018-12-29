@@ -136,7 +136,7 @@ TEST(LineSegmentLineSegmentIntersection, Touch) {
     EXPECT_DOUBLE_EQ(0, x.value()[2]);
 }
 
-TEST(LineSegmentLineSegmentIntersection, NoIntersection) {
+TEST(LineSegmentLineSegmentIntersection, IntersectionOutsideOfLineSegment) {
     auto x = line_segment_line_segment_intersection(
         LineSegment{
             Point3d{0,0,0},
@@ -146,6 +146,33 @@ TEST(LineSegmentLineSegmentIntersection, NoIntersection) {
             Point3d{1,0,1}}
     );
     ASSERT_FALSE(x);
+}
+
+TEST(LineSegmentLineSegmentIntersection, ParallelLines) {
+    auto x = line_segment_line_segment_intersection(
+        LineSegment{
+            Point3d{0,0,0},
+            Point3d{1,0,0}},
+        LineSegment{
+            Point3d{0,0,1},
+            Point3d{1,0,1}}
+    );
+    ASSERT_FALSE(x);
+}
+
+TEST(LineSegmentLineSegmentIntersection, OverlappingLineSegments) {
+    auto x = line_segment_line_segment_intersection(
+        LineSegment{
+            Point3d{0,0,0},
+            Point3d{2,0,0}},
+        LineSegment{
+            Point3d{1,0,0},
+            Point3d{3,0,0}}
+    );
+    ASSERT_TRUE(x);
+    EXPECT_DOUBLE_EQ(1, x.value()[0]);
+    EXPECT_DOUBLE_EQ(0, x.value()[1]);
+    EXPECT_DOUBLE_EQ(0, x.value()[2]);
 }
 
 // DEBUG
