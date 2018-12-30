@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <optional>
 #include <vector>
-#include "types.h"
+#include "geom_types.h"
 
 namespace {
 

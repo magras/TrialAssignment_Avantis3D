@@ -11,11 +11,11 @@ add_executable(triangle_cross
   src/equal_to_zero.h
   src/fmap.h
   src/fmap.cpp
+  src/geom_types.h
   src/line_segment_line_segment_intersection_2d.cpp
   src/line_segment_line_segment_intersection_3d.cpp
   src/triangle_line_segment_intersection_2d.cpp
   src/triangle_line_segment_intersection_3d.cpp
-  src/types.h
   src/main.cpp)
 
 set_target_properties(triangle_cross PROPERTIES

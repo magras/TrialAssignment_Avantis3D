@@ -2,14 +2,14 @@
 #include <optional>
 #include "equal_to_zero.h"
 #include "fmap.h"
-#include "types.h"
+#include "geom_types.h"
 
 // There is proposal P0627 about [[unreachable]] attribute.
 // Actually `assert(false)` has different meaning, but it's
 // platform independent and "good enough" for prototype code.
 #define UNREACHABLE assert(false)
 
-std::optional<Point3d> line_segment_line_segment_intersection(LineSegment ln0, LineSegment ln1);
+std::optional<Point3d> line_segment_line_segment_intersection(LineSegment3d ln0, LineSegment3d ln1);
 std::optional<Point2d> triangle_line_segment_intersection(Triangle2d const& tri, LineSegment2d const& ls);
 
 namespace {
@@ -25,7 +25,7 @@ namespace {
             p[2] / p[3]};
     }
 
-    Point3d perpendicular(Triangle const& t) {
+    Point3d perpendicular(Triangle3d const& t) {
         return cross(t[1]-t[0], t[2]-t[0]);
     }
 
@@ -41,7 +41,7 @@ namespace {
         return a + k * (b - a);
     }
 
-    LineSegment find_max_edge(Triangle const& t) {
+    LineSegment3d find_max_edge(Triangle3d const& t) {
 
         auto a = sqrNorm(t[0] - t[1]);
         auto b = sqrNorm(t[1] - t[2]);
@@ -57,17 +57,17 @@ namespace {
         UNREACHABLE;
     }
 
-    double sqrNorm(LineSegment const& ls) {
+    double sqrNorm(LineSegment3d const& ls) {
         return sqrNorm(ls[0] - ls[1]);
     }
 
 } // anonymous namespace
 
-std::optional<Point3d> triangle_line_segment_intersection(Triangle const& tri, LineSegment const& ln) {
+std::optional<Point3d> triangle_line_segment_intersection(Triangle3d const& tri, LineSegment3d const& ln) {
 
     // Find perpendicular to triangle plane and check if triangle is degenerate triangle.
     Point3d perpend = perpendicular(tri);
-    LineSegment max_edge = find_max_edge(tri);
+    LineSegment3d max_edge = find_max_edge(tri);
     if (equal_to_zero(norm(perpend), sqrNorm(max_edge))) {
         return line_segment_line_segment_intersection(max_edge, ln);
     }
@@ -129,11 +129,11 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle const& tri, L
 
 TEST(TriangleLineSegmentIntersection, TrivialCase) {
     auto x = triangle_line_segment_intersection(
-        Triangle{
+        Triangle3d{
             Point3d{1,0,0},
             Point3d{0,1,0},
             Point3d{0,0,1}},
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{1,1,1}}
     );
@@ -145,11 +145,11 @@ TEST(TriangleLineSegmentIntersection, TrivialCase) {
 
 TEST(TriangleLineSegmentIntersection, NoIntersection) {
     auto x = triangle_line_segment_intersection(
-        Triangle{
+        Triangle3d{
             Point3d{1,0,0},
             Point3d{0,1,0},
             Point3d{0,0,1}},
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{-1,-1,-1}}
     );
@@ -158,11 +158,11 @@ TEST(TriangleLineSegmentIntersection, NoIntersection) {
 
 TEST(TriangleLineSegmentIntersection, FlatOrbitraryInput0) {
     auto x = triangle_line_segment_intersection(
-        Triangle{
+        Triangle3d{
             Point3d{ 8,-3, 0},
             Point3d{-7, 2, 0},
             Point3d{-6,-1, 0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{ 5, 6,-4},
             Point3d{ 7, 9,-2}}
     );
@@ -171,11 +171,11 @@ TEST(TriangleLineSegmentIntersection, FlatOrbitraryInput0) {
 
 TEST(TriangleLineSegmentIntersection, FlatOrbitraryInput1) {
     auto x = triangle_line_segment_intersection(
-        Triangle{
+        Triangle3d{
             Point3d{ 1, 3, 0},
             Point3d{ 7,-3, 0},
             Point3d{-1,-6, 0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{ 0,-4, 1},
             Point3d{-3,-7,-9}}
     );

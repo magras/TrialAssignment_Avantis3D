@@ -1,6 +1,6 @@
 #include <optional>
 #include "fmap.h"
-#include "types.h"
+#include "geom_types.h"
 
 // Forward two dementional case to more general three dimentional implementation.
 
@@ -21,8 +21,8 @@ namespace {
         return Point3d{ x[0], x[1], 0 };
     }
 
-    LineSegment line_segment_to_3d(LineSegment2d const& ls) {
-        return LineSegment{
+    LineSegment3d line_segment_to_3d(LineSegment2d const& ls) {
+        return LineSegment3d{
             point_to_3d(ls[0]),
             point_to_3d(ls[1])
         };
@@ -30,7 +30,7 @@ namespace {
 
 } // anonymous namespace
 
-std::optional<Point3d> line_segment_line_segment_intersection(LineSegment ln0, LineSegment ln1);
+std::optional<Point3d> line_segment_line_segment_intersection(LineSegment3d ln0, LineSegment3d ln1);
 
 std::optional<Point2d> line_segment_line_segment_intersection(LineSegment2d const& ls0, LineSegment2d const& ls1) {
     auto x = line_segment_line_segment_intersection(

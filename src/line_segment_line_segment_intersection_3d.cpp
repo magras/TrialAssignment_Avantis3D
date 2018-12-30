@@ -2,7 +2,7 @@
 #include <optional>
 #include "equal_to_zero.h"
 #include "fmap.h"
-#include "types.h"
+#include "geom_types.h"
 
 namespace {
 
@@ -34,7 +34,7 @@ namespace {
 
 } // anonymous namespace
 
-std::optional<Point3d> line_segment_line_segment_intersection(LineSegment ln0, LineSegment ln1) {
+std::optional<Point3d> line_segment_line_segment_intersection(LineSegment3d ln0, LineSegment3d ln1) {
 
     Point3d a = ln0[1] - ln0[0];
     Point3d b = ln1[1] - ln1[0];
@@ -108,10 +108,10 @@ std::optional<Point3d> line_segment_line_segment_intersection(LineSegment ln0, L
 
 TEST(LineSegmentLineSegmentIntersection, TrivialCase) {
     auto x = line_segment_line_segment_intersection(
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{2,0,0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{1,0,-1},
             Point3d{2,0,+1}}
     );
@@ -123,10 +123,10 @@ TEST(LineSegmentLineSegmentIntersection, TrivialCase) {
 
 TEST(LineSegmentLineSegmentIntersection, Touch) {
     auto x = line_segment_line_segment_intersection(
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{1,0,0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{1,0,0},
             Point3d{1,1,0}}
     );
@@ -138,10 +138,10 @@ TEST(LineSegmentLineSegmentIntersection, Touch) {
 
 TEST(LineSegmentLineSegmentIntersection, IntersectionOutsideOfLineSegment) {
     auto x = line_segment_line_segment_intersection(
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{2,0,0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{1,0,2},
             Point3d{1,0,1}}
     );
@@ -150,10 +150,10 @@ TEST(LineSegmentLineSegmentIntersection, IntersectionOutsideOfLineSegment) {
 
 TEST(LineSegmentLineSegmentIntersection, ParallelLines) {
     auto x = line_segment_line_segment_intersection(
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{1,0,0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,1},
             Point3d{1,0,1}}
     );
@@ -162,10 +162,10 @@ TEST(LineSegmentLineSegmentIntersection, ParallelLines) {
 
 TEST(LineSegmentLineSegmentIntersection, OverlappingLineSegments) {
     auto x = line_segment_line_segment_intersection(
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{2,0,0}},
-        LineSegment{
+        LineSegment3d{
             Point3d{1,0,0},
             Point3d{3,0,0}}
     );
@@ -182,10 +182,10 @@ TEST(LineSegmentLineSegmentIntersection, OverlappingLineSegments) {
 
 TEST(LineSegmentLineSegmentIntersection, PrimeNumbers) {
     auto x = line_segment_line_segment_intersection(
-        LineSegment{
+        LineSegment3d{
             Point3d{13,17,19},
             Point3d{-137./11,-177./11,-195./11}},
-        LineSegment{
+        LineSegment3d{
             Point3d{0,0,0},
             Point3d{3,5,7}}
     );
