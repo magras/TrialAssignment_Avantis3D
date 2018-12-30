@@ -41,7 +41,7 @@ namespace {
         return a + k * (b - a);
     }
 
-    LineSegment degenerate_triangle_to_line_segment(Triangle const& t) {
+    LineSegment find_max_edge(Triangle const& t) {
 
         auto a = sqrNorm(t[0] - t[1]);
         auto b = sqrNorm(t[1] - t[2]);
@@ -57,16 +57,19 @@ namespace {
         UNREACHABLE;
     }
 
+    double sqrNorm(LineSegment const& ls) {
+        return sqrNorm(ls[0] - ls[1]);
+    }
+
 } // anonymous namespace
 
 std::optional<Point3d> triangle_line_segment_intersection(Triangle const& tri, LineSegment const& ln) {
 
     // Find perpendicular to triangle plane and check if triangle is degenerate triangle.
     Point3d perpend = perpendicular(tri);
-    // TODO: magnitude
-    if (equal_to_zero(norm(perpend), 1)) {
-        return line_segment_line_segment_intersection(
-            degenerate_triangle_to_line_segment(tri), ln);
+    LineSegment max_edge = find_max_edge(tri);
+    if (equal_to_zero(norm(perpend), sqrNorm(max_edge))) {
+        return line_segment_line_segment_intersection(max_edge, ln);
     }
 
     // Find transition to basis where:
