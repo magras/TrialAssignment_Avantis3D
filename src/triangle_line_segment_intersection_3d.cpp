@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <optional>
 #include "equal_to_zero.h"
+#include "fmap.h"
 #include "types.h"
 
 // There is proposal P0627 about [[unreachable]] attribute.
@@ -95,11 +96,10 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle const& tri, L
                 Point2d{a[0], a[1]},
                 Point2d{b[0], b[1]}});
         
-        if (!x)
-            return std::nullopt;
-
-        Point3d t {x.value()[0], x.value()[1], 0};
-        return from_homogen(inv_trans * to_homogen(t));
+        return fmap(x, [&](auto x){
+            Point3d t {x[0], x[1], 0};
+            return from_homogen(inv_trans * to_homogen(t));
+        });
     }
 
     // If both ends of segment lie on one side of a triangle plane, there is no intersection.

@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <optional>
 #include "equal_to_zero.h"
+#include "fmap.h"
 #include "types.h"
 
 namespace {
@@ -85,13 +86,12 @@ std::optional<Point3d> line_segment_line_segment_intersection(LineSegment ln0, L
 
         auto intersection = intervals_intersection({0,1}, {x,y});
             
-        if (!intersection)
-            return std::nullopt;
-
         // Any value inside intersection will work. I'm using left boundary.
         // It may cause troubles, so may be it's better to take mid point.
         // Also it's possible to return line segment to deligate decision to user.
-        return ln0[0] + intersection.value()[0] * a;
+        return fmap(intersection, [&](auto intersection){
+            return ln0[0] + intersection[0] * a;
+        });
     }
 
     double s = dot(cross(c, b), v) / sqrNorm(v);

@@ -1,4 +1,5 @@
 #include <optional>
+#include "fmap.h"
 #include "types.h"
 
 // Forward two dementional case to more general three dimentional implementation.
@@ -36,10 +37,9 @@ std::optional<Point2d> line_segment_line_segment_intersection(LineSegment2d cons
         line_segment_to_3d(ls0),
         line_segment_to_3d(ls1));
 
-    if (!x)
-        return std::nullopt;
-
-    return point_to_2d(*x);
+    return fmap(x, [](auto x){
+        return point_to_2d(x);
+    });
 }
 
 #include <gtest/gtest.h>
