@@ -43,9 +43,9 @@ namespace {
 
     LineSegment degenerate_triangle_to_line_segment(Triangle const& t) {
 
-        auto a = norm(t[0] - t[1]);
-        auto b = norm(t[1] - t[2]);
-        auto c = norm(t[2] - t[0]);
+        auto a = sqrNorm(t[0] - t[1]);
+        auto b = sqrNorm(t[1] - t[2]);
+        auto c = sqrNorm(t[2] - t[0]);
 
         if (a >= b && a >= c)
             return {t[0], t[1]};
