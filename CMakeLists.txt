@@ -12,6 +12,7 @@ add_executable(triangle_cross
   src/fmap.h
   src/fmap.cpp
   src/geom_types.h
+  src/geom_type_transform.h
   src/line_segment_line_segment_intersection_2d.cpp
   src/line_segment_line_segment_intersection_3d.cpp
   src/triangle_line_segment_intersection_2d.cpp

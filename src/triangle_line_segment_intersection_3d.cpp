@@ -3,6 +3,7 @@
 #include "equal_to_zero.h"
 #include "fmap.h"
 #include "geom_types.h"
+#include "geom_type_transform.h"
 
 // There is proposal P0627 about [[unreachable]] attribute.
 // Actually `assert(false)` has different meaning, but it's
@@ -85,25 +86,30 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle3d const& tri,
     Mat4d trans = inv(inv_trans);
 
     // Transform line segment into new basis.
-    Point4d a = trans * to_homogen(ln[0]);
-    Point4d b = trans * to_homogen(ln[1]);
+    LineSegment3d trans_ln = transform(ln, [&](auto p){
+        return from_homogen(trans * to_homogen(p));
+    });
 
-    // TODO: magnitude
-    if (equal_to_zero(a[2], 1) && equal_to_zero(b[2], 1)) {
+    bool coplanar = std::all_of(begin(trans_ln), end(trans_ln), [&](Point3d const& p) {
+        // TODO: magnitude
+        return equal_to_zero(p[2], 1);
+    });
+
+    if (coplanar) {
         auto x = triangle_line_segment_intersection(
             Triangle2d{
                 Point2d{0,0},
-                Point2d{0,0},
-                Point2d{0,0}},
-            LineSegment2d{
-                Point2d{a[0], a[1]},
-                Point2d{b[0], b[1]}});
+                Point2d{0,1},
+                Point2d{1,0}},
+            transform(trans_ln, point_to_2d));
         
         return fmap(x, [&](auto x){
-            Point3d t {x[0], x[1], 0};
-            return from_homogen(inv_trans * to_homogen(t));
+            return from_homogen(inv_trans * to_homogen(point_to_3d(x)));
         });
     }
+
+    auto a = trans_ln[0];
+    auto b = trans_ln[1];
 
     // If both ends of segment lie on one side of a triangle plane, there is no intersection.
     if (a[2] * b[2] > 0)
@@ -111,10 +117,7 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle3d const& tri,
 
     // Find point where line segment intersects triangle plane.
     double k = abs(a[2]) / (abs(a[2]) + abs(b[2]));
-    Point3d x = mid_point(
-        from_homogen(a),
-        from_homogen(b),
-        k);
+    Point3d x = mid_point(a, b, k);
 
     // Check that `x` lies inside of triangle.
     // Because two sides of triangle are now basis vectors,
