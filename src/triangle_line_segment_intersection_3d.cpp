@@ -69,7 +69,8 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle3d const& tri,
     // Find perpendicular to triangle plane and check if triangle is degenerate triangle.
     Point3d perpend = perpendicular(tri);
     LineSegment3d max_edge = find_max_edge(tri);
-    if (equal_to_zero(norm(perpend), sqrNorm(max_edge))) {
+    double magnitude = sqrNorm(max_edge);
+    if (equal_to_zero(norm(perpend), magnitude)) {
         return line_segment_line_segment_intersection(max_edge, ln);
     }
 
@@ -91,8 +92,7 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle3d const& tri,
     });
 
     bool coplanar = std::all_of(begin(trans_ln), end(trans_ln), [&](Point3d const& p) {
-        // TODO: magnitude
-        return equal_to_zero(p[2], 1);
+        return equal_to_zero(p[2], magnitude);
     });
 
     if (coplanar) {
