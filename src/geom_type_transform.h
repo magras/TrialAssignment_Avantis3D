@@ -20,7 +20,6 @@ inline constexpr size_t number_of_dimentions_v = number_of_dimentions<T>::value;
 
 
 inline Point2d point_to_2d(Point3d const& x) {
-    assert(x[2] == 0);
     return Point2d{ x[0], x[1] };
 }
 
