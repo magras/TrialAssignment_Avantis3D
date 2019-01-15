@@ -25,57 +25,28 @@ std::optional<Point2d> line_segment_line_segment_intersection(LineSegment2d cons
 
 std::optional<Point2d> triangle_line_segment_intersection(Triangle2d const& tri, LineSegment2d const& ls) {
 
-    // Basic idea of this algorithm is to find all points that intersect triangle
-    // and build "convex hull" for this set. It would allow to build line segment
-    // that represent all points of intersection.
-    
-    // If it's enough to return just any point, replace all
-    // `intersection.push_back()` calls with early returns.
-
-    // I like my algorithm, because it has no special cases, hence it's easy to
-    // implement.
-
-    std::vector<Point2d> intersection;
-    intersection.reserve(5);
-
-    // Add line segment ends to set, if they are inside of a triangle.
+    // If any end of line segment is inside of the triangle return it.
     for (Point2d const& p : ls) {
         if (is_point_inside_triangle(tri, p))
-            intersection.push_back(p);
+            return p;
     }
 
-    // Find and add to set intersections between all triangle's edges and line segment.
+    // If there is an intersection between line segment and any of the
+    // triangle sides return intersection point.
     for (size_t i=0; i<tri.size(); ++i) {
         LineSegment2d edge{ tri[i], tri[i % tri.size()] };
         auto x = line_segment_line_segment_intersection(edge, ls);
-        if (x)
-            intersection.push_back(*x);
+        if (x.has_value())
+            return x.value();
     }
 
-    // Remove duplicates from the set.
-    // I'm assuming here, that duplicates would be exact match, because duplicates should
-    // appear in a set only if some of input data got duplicates in it. Therefore
-    // line segment - line segment intersection algorithm will return them without any
-    // modifications.
-    std::sort(begin(intersection), end(intersection), [](Point2d const& lhs, Point2d const& rhs){
-        return std::lexicographical_compare(begin(lhs), end(lhs), begin(rhs), end(rhs));
-    });
-    intersection.erase(
-        std::unique(begin(intersection), end(intersection)),
-        end(intersection));
-
-    // After removing duplicates there should be 0, 1, or 2 points in a set.
-    assert(intersection.size() >= 0);
-    assert(intersection.size() <= 2);
-
-    if (intersection.empty())
-        return std::nullopt;
-
-    // Instead of possibly building a line segment just return any point from the set.
-    return intersection[0];
+    return std::nullopt;
 }
 
 #include <gtest/gtest.h>
+
+// CRAP: This tests are fragile. Probably should check that
+// returned point lies inside triangle and line segment.
 
 TEST(TriangleLineSegmentIntersection2d, TouchingVetex) {
     auto x = triangle_line_segment_intersection(
@@ -121,6 +92,3 @@ TEST(TriangleLineSegmentIntersection2d, WholeLineSegmentInsideTriangle) {
     EXPECT_DOUBLE_EQ(1, x.value()[0]);
     EXPECT_DOUBLE_EQ(2, x.value()[1]);
 }
-
-// DEBUG: It's hard to test this function properly. I think I'll change
-//        return type to allow line segment results.
