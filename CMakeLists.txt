@@ -16,8 +16,7 @@ add_executable(triangle_cross
   src/line_segment_line_segment_intersection_2d.cpp
   src/line_segment_line_segment_intersection_3d.cpp
   src/triangle_line_segment_intersection_2d.cpp
-  src/triangle_line_segment_intersection_3d.cpp
-  src/main.cpp)
+  src/triangle_line_segment_intersection_3d.cpp)
 
 set_target_properties(triangle_cross PROPERTIES
   CXX_STANDARD 17
@@ -25,7 +24,6 @@ set_target_properties(triangle_cross PROPERTIES
 
 target_link_libraries(triangle_cross
   CONAN_PKG::blaze
-  CONAN_PKG::boost
   CONAN_PKG::lapack
   CONAN_PKG::gtest)
 
