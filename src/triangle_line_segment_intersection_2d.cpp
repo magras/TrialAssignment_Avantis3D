@@ -1,5 +1,5 @@
-#include <algorithm>
 #include <optional>
+#include <range/v3/algorithm/all_of.hpp>
 #include "equal_to_zero.h"
 #include "geom_types.h"
 
@@ -30,8 +30,8 @@ namespace {
             perp_dot(t[2] - t[1], p - t[1]),
             perp_dot(t[0] - t[2], p - t[2])};
 
-        return std::all_of(begin(s), end(s), [](double x){ return x >= 0; })
-            || std::all_of(begin(s), end(s), [](double x){ return x <= 0; });
+        return ranges::all_of(s, [](double x){ return x >= 0; })
+            || ranges::all_of(s, [](double x){ return x <= 0; });
     }
 
 } // anonymous namespace

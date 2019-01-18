@@ -19,6 +19,7 @@ install:
   - pip install --user conan
 
 script:
+  - conan create external/range-v3 magras/ci
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_BUILD_TYPE=Release

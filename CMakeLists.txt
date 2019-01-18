@@ -25,7 +25,8 @@ set_target_properties(triangle_cross PROPERTIES
 target_link_libraries(triangle_cross
   CONAN_PKG::blaze
   CONAN_PKG::lapack
-  CONAN_PKG::gtest)
+  CONAN_PKG::gtest
+  CONAN_PKG::range-v3)
 
 enable_testing()
 

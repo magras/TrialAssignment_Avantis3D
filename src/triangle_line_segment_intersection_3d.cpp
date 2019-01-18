@@ -1,5 +1,5 @@
-#include <algorithm>
 #include <optional>
+#include <range/v3/algorithm/all_of.hpp>
 #include "equal_to_zero.h"
 #include "fmap.h"
 #include "geom_types.h"
@@ -91,7 +91,7 @@ std::optional<Point3d> triangle_line_segment_intersection(Triangle3d const& tri,
         return from_homogen(trans * to_homogen(p));
     });
 
-    bool coplanar = std::all_of(begin(trans_ln), end(trans_ln), [&](Point3d const& p) {
+    bool coplanar = ranges::all_of(trans_ln, [&](Point3d const& p) {
         return equal_to_zero(p[2], magnitude);
     });
 
